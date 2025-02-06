@@ -6,7 +6,7 @@ class SignalDetection:
         self.misses = misses  # Misses: signals that were not detected
         self.fa = fa  # False alarms: noise mistaken for a signal
         self.cr = cr  # Correct rejections: correctly identified noise
-
+#(ChatGPT assisted)
     def hit_rate(self):
         """Calculate the hit rate (H) = hits / (hits + misses)"""
         return self.hits / (self.hits + self.misses) if (self.hits + self.misses) > 0 else 0
@@ -20,7 +20,7 @@ class SignalDetection:
         H = self.hit_rate()
         FA = self.fa_rate()
 
-#Avoid extreme probabilities (0 or 1) by applying a correction
+#Avoid extreme probabilities (0 or 1) by applying a correction (ChatGPT assisted)
         H = min(max(H, 1e-5), 1 - 1e-5)
         FA = min(max(FA, 1e-5), 1 - 1e-5)
 
