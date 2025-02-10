@@ -36,9 +36,3 @@ class SignalDetection:
         FA = min(max(FA, 1e-5), 1 - 1e-5)
 
         return -0.5 * (stats.norm.ppf(H) + stats.norm.ppf(FA))
-
-sd = SignalDetection(5, 2, 8, 2)
-d_prime_value = sd.d_prime()
-criterion_value = sd.criterion()
-print(f"d': {d_prime_value}")
-print(f"Criterion: {criterion_value}")
