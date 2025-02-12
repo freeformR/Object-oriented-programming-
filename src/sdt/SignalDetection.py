@@ -2,21 +2,43 @@ import scipy.stats as stats  # Importing for norm.ppf (inverse normal CDF)
 
 class SignalDetection:
     def __init__(self, hits, misses, fa, cr):
-        self.hits = hits  # Hits: correctly detected signals
-        self.misses = misses  # Misses: signals that were not detected
-        self.fa = fa  # False alarms: noise mistaken for a signal
-        self.cr = cr  # Correct rejections: correctly identified noise
+        """initializes the SignalDetection class with a count of:
+        - Hits: number of correctly detected signals
+        - Misses: number of undetected signals
+        - False alarms: number of noise mistaken for a signal
+        - Correct rejections: number of correctly identified noise
+        """
+        self.hits = hits
+        self.misses = misses
+        self.fa = fa
+        self.cr = cr
 #(ChatGPT assisted)
     def hit_rate(self):
-        """Calculate the hit rate (H) = hits / (hits + misses)"""
+        """Calculate the hit rate (H), which is the proportion 
+        of correctly detecting a signal when it is present
+
+        Formula:
+        H = hits / (hits + misses)"""
         return self.hits / (self.hits + self.misses) if (self.hits + self.misses) > 0 else 0
 
     def fa_rate(self):
-        """Calculate the false alarm rate (FA) = fa / (fa + cr)"""
+        """Calculate the false alarm rate (FA), which is the proportion 
+        of incorrectly detecting a signal when none is present
+        
+        Formula:
+        FA = fa / (fa + cr)"""
         return self.fa / (self.fa + self.cr) if (self.fa + self.cr) > 0 else 0
 
     def d_prime(self):
-        """Calculate d-prime (d') = Z(Hit Rate) - Z(False Alarm Rate)"""
+        """Calculate d-prime (d'), which is a measure of how well the 
+        observer can distinguish signal and noise
+        
+        Higher d' indicates stronger/better sensitivity
+        Lower d' indicates weaker sensitivity
+        
+        Formula:
+        d' = Z(Hit Rate) - Z(False Alarm Rate)
+        """
         H = self.hit_rate()
         FA = self.fa_rate()
 
@@ -27,7 +49,15 @@ class SignalDetection:
         return stats.norm.ppf(H) - stats.norm.ppf(FA)
 
     def criterion(self):
-        """Calculate the criterion (C) = -0.5 * (Z(Hit Rate) + Z(False Alarm Rate))"""
+        """Calculate the criterion (C), which is a measure of the observer's response bias
+        sees if they respond 'noise' or 'signal' more often
+
+        Positive C suggests more likely to respond 'noise'
+        Negative C suggests more likely to say 'signal'
+        Near-zero C suggests no bias
+        
+        Formula:
+        C = -0.5 * (Z(Hit Rate) + Z(False Alarm Rate))"""
         H = self.hit_rate()
         FA = self.fa_rate()
 
